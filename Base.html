@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Our Body</title>
+    <link rel="stylesheet" href="Side.css" />
+    
+  </head>
+  <body>
+    <div class="content-container">
+      <div id="page-sek" class="page-content">
+        <h1>GAK TAHU</h1>
+      </div>
+
+      <div id="page-nanti" class="page-content">
+        <h1>WORK BALANCE</h1>
+      </div>
+
+      <div id="page-utama" class="page-content">
+        <h1>HOME BASE</h1>
+      </div>
+
+      <div id="page-money" class="page-content active">
+        <h1>MONEY MANAGER</h1>
+      </div>
+
+      <div id="page-profile" class="page-content">
+        <div class="profile-header">
+          <div
+            class="avatar-container"
+            id="avatar-container"
+            style="cursor: pointer"
+          >
+            <!-- Default Avatar gambar kosong/placeholder -->
+            <img
+              id="avatar-img"
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+              alt="Foto Profil"
+              class="avatar"
+            />
+
+            <div class="edit-badge">✏️</div>
+          </div>
+        </div>
+        <!-- Input file tersembunyi untuk memicu galeri HP -->
+        <input
+          type="file"
+          id="avatar-input"
+          accept="image/*"
+          style="display: none"
+        />
+
+        <!-- Nama Profil -->
+        <h2 class="profile-name">AKHMAD UBAIDILLAH ASFIYA</h2>
+
+        <!-- Lencana My Points dengan Border Kuning Sesuai Referensi Foto 136666.jpg -->
+        <div class="my-points-box">
+          <span>MY POINTS</span>
+        </div>
+
+        <!-- Daftar Menu Utama -->
+        <div class="menu-list">
+          <!-- Button Informasi Pribadi -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">👤 Informasi Pribadi</div>
+            <div class="menu-right">➔</div>
+          </div>
+          <!-- Button Toko -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">🏪 Toko</div>
+            <div class="menu-right">➔</div>
+          </div>
+          <!-- Button Akumulasi Progress -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">📊 Akumulasi Progress</div>
+            <div class="menu-right">➔</div>
+          </div>
+        </div>
+
+        <!-- Bagian Sub-Judul: General -->
+        <h3 class="section-title">General</h3>
+
+        <!-- Daftar Menu General -->
+        <div class="menu-list">
+          <!-- Button Bantuan -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">❓ Bantuan</div>
+            <div class="menu-right">➔</div>
+          </div>
+          <!-- Button Pengaturan -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">⚙️ Pengaturan</div>
+            <div class="menu-right">➔</div>
+          </div>
+          <!-- Button Legal -->
+          <div class="menu-item" style="cursor: pointer">
+            <div class="menu-left">⚖️ Legal</div>
+            <div class="menu-right">➔</div>
+          </div>
+        </div>
+        <div id="halaman-pengaturan" style="display: none">
+          <div class="menu-list" style="margin-bottom: 15px">
+            <div
+              class="menu-item"
+              id="btn-kembali-profil"
+              style="cursor: pointer; font-weight: bold"
+            >
+              <div class="menu-left">⬅️ Kembali ke Profil</div>
+              <div class="menu-right"></div>
+            </div>
+          </div>
+
+          <h3 class="section-title">Tampilan & Bahasa</h3>
+          <div class="menu-list">
+            <div class="menu-item" style="cursor: pointer">
+              <div class="menu-left">🌓 Mode Tampilan (Dark/Light)</div>
+              <div class="menu-right">➔</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="#" data-target="page-sek">1</a>
+      <a href="#" data-target="page-nanti">2</a>
+      <a href="#" data-target="page-utama">3</a>
+      <a href="#" data-target="page-money">4</a>
+      <a href="#" data-target="page-profile">5</a>
+    </div>
+<script src="script.js"></script>
+  </body>
+</html>
