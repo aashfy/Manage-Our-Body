@@ -678,3 +678,42 @@ body:not(.light-mode) .layer-konten-pengaturan {
 .switch input:checked + .slider:before {
   transform: translateX(22px);
 }
+
+/* ==========================================
+   STYLING DROPDOWN (SELECT) AGAR ADAPTIF
+   ========================================== */
+
+/* 🌙 KONDISI DEFAULT (DARK MODE) */
+select {
+  background-color: #2c2e38 !important; /* Warna abu gelap biar matching dengan card-nya */
+  color: #ffffff !important;            /* Warna teks jadi putih bersih */
+  border: 1px solid #3a3d4a !important; /* Border tipis biar tegas tapi soft */
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  /* Hilangkan efek biru pas di-tap di HP */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Biar pas diklik, opsi di dalamnya juga gak rusak warnanya */
+select option {
+  background-color: #1c1e24;
+  color: #ffffff;
+}
+
+/* ☀️ KONDISI SAAT LIGHT MODE (.light-mode) */
+body.light-mode select {
+  background-color: #ffffff !important; /* Kembali jadi putih bersih */
+  color: #1c1c1e !important;            /* Teks berubah jadi hitam/gelap */
+  border: 1px solid #d1d1d6 !important; /* Border abu-abu terang khas iOS */
+}
+
+body.light-mode select option {
+  background-color: #ffffff;
+  color: #1c1c1e;
+}
