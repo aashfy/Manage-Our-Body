@@ -1,0 +1,1396 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #0b0f19; /* Latar belakang gelap amoled agar hemat baterai HP */
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Mengatur wadah navigasi bawah */
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: #111827; /* Abu-abu sangat gelap */
+  border-top: 1px solid #1f2937;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999;
+}
+/* Mengatur tiap tombol link di dalam navigasi */
+.bottom a {
+  color: #9ca3af; /* Warna abu-abu halus untuk menu yang belum aktif */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Efek ketika tombol disentuh di layar HP */
+.bottom a:active {
+  background-color: #1f2937;
+  color: #3b82f6;
+  outline: none;
+  border-radius: 50%;
+}
+.bottom a:nth-child(3) {
+  background-color: #3b82f6; /* Warna biru menyala */
+  color: #ffffff;
+  width: 60px;
+  height: 60px;
+  transform: translateY(-15px); /* Menggeser tombol ke atas agar menonjol */
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+  border: 4px solid #0b0f19; /* Memisahkan tombol dari batas bar */
+}
+/* Efek saat tombol tengah ditekan */
+.bottom a:nth-child(3):active {
+  background-color: #2563eb;
+  transform: translateY(-12px) scale(0.95);
+}
+
+/* ==========================================
+   STYLE KALENDER DASHBOARD (DEFAULT: DARK MODE)
+   ========================================== */
+
+.dashboard-calendar-section {
+  width: 100%;
+  padding: 15px 0 5px 0;
+  box-sizing: border-box;
+}
+
+/* Tata Letak Header Atas */
+.calendar-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px 12px 15px;
+}
+
+/* 🌙 SETTINGAN KONDISI GELAP (DEFAULT SISTEM MAS UBAY) */
+
+/* Judul "Harian" di Dark Mode */
+.calendar-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  color: #ffffff !important; /* Putih bersih */
+}
+
+/* Tombol Langganan Premium */
+.btn-premium {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #ffe066, #f59f00);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(245, 159, 0, 0.3);
+  cursor: pointer;
+}
+
+/* Kontainer Kalender Geser */
+.calendar-container {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tombol Kembali ke Hari Ini di Dark Mode */
+.btn-hari-ini {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 1.5px solid #ffffff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Wrapper Barisan Tanggal */
+.calendar-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+  flex: 1; /* KUNCI: Mengambil sisa ruang yang tersedia secara dinamis */
+  width: auto; /* KUNCI: Jangan dipaksa 100% lagi biar gak nabrak tombol */
+  min-width: 0; /* KUNCI: Mencegah konten melar raksasa keluar layar */
+  padding: 5px 0;
+  -webkit-overflow-scrolling: touch;
+}
+.calendar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.calendar-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Kartu Tanggal Biasa / Tidak Dipilih (Dark Mode) */
+.date-card {
+  flex: 0 0 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  background: #1c1e24; /* Abu-abu gelap premium, menyatu dengan background */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-card .day-name {
+  font-size: 11px;
+  color: #aeaeb2; /* Teks abu-abu soft */
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.date-card .day-num {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff; /* Angka putih */
+  position: relative;
+}
+
+/* Kartu Tanggal Aktif / Pas Diklik (Dark Mode) */
+.date-card.active {
+  background: #ffffff !important; /* Jadi putih solid biar kontras dan pop-out */
+}
+.date-card.active .day-name {
+  color: #8e8e93 !important;
+}
+.date-card.active .day-num {
+  color: #1c1c1e !important;
+}
+
+/* Garis Kuning Penanda Hari Ini */
+.date-card.today .day-num::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 15%;
+  width: 70%;
+  height: 3px;
+  background: #ffb703;
+  border-radius: 2px;
+}
+
+/* ==========================================
+   ☀️ ADAPTASI KHUSUS SAAT LIGHT MODE (.light-mode)
+   ========================================== */
+
+body.light-mode .calendar-title {
+  color: #1c1c1e !important; /* Tulisan Harian jadi hitam */
+}
+
+body.light-mode .btn-hari-ini {
+  border-color: #1c1c1e;
+  color: #1c1c1e;
+}
+
+body.light-mode .date-card {
+  background: #f2f2f7; /* Kartu biasa jadi abu-abu terang iOS */
+}
+
+body.light-mode .date-card .day-num {
+  color: #1c1c1e;
+}
+
+body.light-mode .date-card .day-name {
+  color: #8e8e93;
+}
+
+/* Kartu Aktif Pas Diklik (Light Mode) */
+body.light-mode .date-card.active {
+  background: #1c1c1e !important; /* Kartu aktif jadi hitam pekat */
+}
+body.light-mode .date-card.active .day-name,
+body.light-mode .date-card.active .day-num {
+  color: #ffffff !important;
+}
+/* ==========================================
+   HILANGKAN BORDER/HIGHLIGHT BIRU PAS DIKLIK DI KALENDER
+   ========================================== */
+
+/* Hilangkan garis kotak biru saat elemen difokuskan */
+.date-card:focus,
+.btn-hari-ini:focus,
+.btn-premium:focus {
+  outline: none !important;
+}
+
+/* Hilangkan efek kedipan/sorotan biru bawaan HP saat layar di-tap */
+.date-card,
+.btn-hari-ini,
+.btn-premium {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================
+   STYLE FITUR TAMBAH TUGAS (FAB & MODAL)
+   ========================================== */
+
+/* Tombol Melayang (FAB) - Menyesuaikan posisi di atas bottom nav */
+.fab-tugas {
+  position: fixed;
+  bottom: 75px; /* Berada pas di atas Nav Bar kamu */
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #2c2e38; /* Matching dengan warna background card */
+  color: #3b82f6; /* Warna ikon aksen biru kalem, gak mencolok */
+  border: 1px solid #3a3d4a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  z-index: 99;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fab-tugas:active {
+  transform: scale(0.9);
+  background-color: #22242c;
+}
+
+/* Overlay Latar Belakang Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end; /* Memunculkan modal dari bawah layar */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.aktif {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Konten Lembar Modal (Bottom Sheet Style) */
+.modal-tugas-konten {
+  width: 100%;
+  background-color: #1c1e24;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 20px;
+  padding-bottom: 75px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modal-overlay.aktif .modal-tugas-konten {
+  transform: translateY(0);
+}
+
+/* Input Judul Tugas Utama */
+.input-grup-utama input {
+  width: 100%;
+  background-color: #2c2e38;
+  border: 1px solid #3a3d4a;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #ffffff;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Panel Setelan/Pengaturan di dalam Modal */
+.panel-setelan-tugas {
+  margin-top: 20px;
+  background-color: #2c2e38;
+  border-radius: 12px;
+  padding: 8px 16px;
+}
+
+.baris-setelan {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  border-bottom: 1px solid #3a3d4a;
+}
+
+.baris-setelan:last-child {
+  border-bottom: none;
+}
+
+.baris-setelan.ganda {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.sub-setelan {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-setelan-tugas label {
+  font-size: 12px;
+  color: #8e8e93;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* ==========================================
+   STYLE PANEL ULANGI KUSTOM (CHIPS HARI)
+   ========================================== */
+
+.baris-setelan-kustom {
+  padding: 12px 0;
+  border-top: 1px dashed #3a3d4a;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wrapper-opsi-hari {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.chip-hari {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sembunyikan kotak checkbox aslinya */
+.chip-hari input {
+  display: none !important;
+}
+
+/* Ubah checkbox menjadi tombol bulat/kotak modern senada dark mode */
+.chip-hari span {
+  display: block;
+  padding: 8px 0;
+  background-color: #1c1e24;
+  color: #a1a1aa;
+  border: 1px solid #3a3d4a;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* Efek pas tombol harinya aktif dipilih */
+.chip-hari input:checked + span {
+  background-color: #3b82f6; /* Warna biru aksen app kamu */
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+/* ☀️ Penyesuaian untuk Light Mode */
+body.light-mode .baris-setelan-kustom {
+  border-top-color: #e5e7eb;
+}
+body.light-mode .chip-hari span {
+  background-color: #ffffff;
+  color: #48484a;
+  border-color: #d1d1d6;
+}
+body.light-mode .chip-hari input:checked + span {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+/* Input & Dropdown Khusus di Dalam Modal */
+.panel-setelan-tugas select,
+.panel-setelan-tugas input {
+  background-color: #1c1e24 !important;
+  color: #ffffff !important;
+  border: 1px solid #3a3d4a !important;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Area Tombol Aksi */
+.grup-tombol-aksi {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  padding-bottom: 10px;
+}
+
+.btn-aksi-batal,
+.btn-aksi-simpan {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-aksi-batal {
+  color: #9ca3af;
+}
+
+.btn-aksi-simpan {
+  color: #3b82f6;
+}
+
+.btn-aksi-batal:active,
+.btn-aksi-simpan:active {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ☀️ RESPONSIVE UNTUK LIGHT MODE (.light-mode) */
+body.light-mode .fab-tugas {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+body.light-mode .modal-tugas-konten {
+  background-color: #ffffff;
+}
+body.light-mode .input-grup-utama input,
+body.light-mode .panel-setelan-tugas {
+  background-color: #f2f2f7;
+  border-color: #e5e7eb;
+  color: #000000;
+}
+body.light-mode .panel-setelan-tugas select,
+body.light-mode .panel-setelan-tugas input {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #d1d1d6 !important;
+}
+body.light-mode .input-grup-utama input {
+  color: #000000;
+}
+
+/* ==========================================
+   STYLE DAFTAR TUGAS DI DASHBOARD UTAMA
+   ========================================== */
+.todo-dashboard-wrapper {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Menyisakan ruang di bawah agar tidak tertutup FAB / Nav Bar */
+  margin-bottom: 120px;
+}
+
+/* Grup per klasifikasi */
+.grup-klasifikasi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Label Judul Kategori */
+.judul-kategori {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.judul-kategori.important {
+  color: #ef4444;
+} /* Merah membara */
+.judul-kategori.normal {
+  color: #3b82f6;
+} /* Biru kalem */
+.judul-kategori.optional {
+  color: #9ca3af;
+} /* Abu-abu santai */
+
+/* Desain Kartu Tugas */
+.card-tugas {
+  background-color: #2c2e38;
+  border: 1px solid #3a3d4a;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Efek Garis Samping Sesuai Klasifikasi */
+.card-tugas.important {
+  border-left: 4px solid #ef4444;
+}
+.card-tugas.normal {
+  border-left: 4px solid #3b82f6;
+}
+.card-tugas.optional {
+  border-left: 4px solid #9ca3af;
+}
+
+.info-tugas {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.text-judul-tugas {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.text-waktu-tugas {
+  font-size: 12px;
+  color: #8e8e93;
+}
+
+/* Tombol Checkbox Lingkaran Modern di Kanan */
+.btn-cek-tugas {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #4a4d5a;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+/* Style saat tugas sudah selesai dicentang */
+.card-tugas.selesai {
+  opacity: 0.5;
+}
+.card-tugas.selesai .text-judul-tugas {
+  text-decoration: line-through;
+  color: #8e8e93;
+}
+.card-tugas.selesai .btn-cek-tugas {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+.card-tugas.selesai .btn-cek-tugas::after {
+  content: "✓";
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ☀️ Penyesuaian Light Mode */
+body.light-mode .card-tugas {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+body.light-mode .text-judul-tugas {
+  color: #000000;
+}
+body.light-mode .btn-cek-tugas {
+  border-color: #c7c7cc;
+}
+
+/* Wrapper aksi di kanan kartu tugas */
+.aksi-tugas-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Tombol Hapus transparan, hanya muncul icon merah */
+.btn-hapus-tugas {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.btn-hapus-tugas:active {
+  transform: scale(0.85);
+}
+
+/* ==========================================================================
+   WIDGET AKUMULASI MINGGUAN
+   ========================================================================== */
+.weekly-box {
+  background: #1e1e2e;
+  border: 1px solid #313244;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.weekly-box h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #cdd6f4;
+  letter-spacing: 0.5px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stats-row div {
+  flex: 1;
+  background: #252538;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #a6adc8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Pewarnaan Angka Stats */
+#acc-terlaksana {
+  color: #a6e3a1; /* Hijau */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+#acc-tertunda {
+  color: #f38ba8; /* Merah/Pink */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   BOX KATEGORI PERMANEN & LIST TUGAS
+   ========================================================================== */
+#dashboard-todo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px;
+}
+
+/* Wadah Besar Setiap Kategori */
+.box-kategori-permanen {
+  background: #1e1e2e;
+  border-radius: 16px;
+  padding: 16px;
+  border-left: 5px solid #45475a; /* Default border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Efek Stabilo Pinggir Berdasarkan Kategori */
+.wadah-important {
+  border-left-color: #f38ba8;
+} /* Merah */
+.wadah-normal {
+  border-left-color: #89b4fa;
+} /* Biru */
+.wadah-optional {
+  border-left-color: #a6e3a1;
+} /* Hijau */
+
+/* Label Judul Kategori */
+.judul-kategori {
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.judul-kategori.important {
+  color: #f38ba8;
+}
+.judul-kategori.normal {
+  color: #89b4fa;
+}
+.judul-kategori.optional {
+  color: #a6e3a1;
+}
+
+/* Pembungkus Item Tugas di Dalam Box */
+.list-tugas-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Card Item Tugas Mandiri */
+.card-tugas-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #252538;
+  padding: 12px 14px;
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.card-tugas-item:hover {
+  transform: translateX(2px);
+  background: #2b2b40;
+}
+
+/* Detail Teks di Dalam Card */
+.info-tugas {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.text-judul-tugas {
+  font-size: 0.95rem;
+  color: #cdd6f4;
+  font-weight: 500;
+}
+
+.text-waktu-tugas {
+  font-size: 0.8rem;
+  color: #bac2de;
+}
+
+/* Wrapper Tombol Aksi */
+.aksi-tugas-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Tombol Hapus */
+.btn-hapus-tugas {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.btn-hapus-tugas:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Custom Checkbox Buat Selesai Tugas */
+.btn-cek-tugas {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #585b70;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.btn-cek-tugas:hover {
+  border-color: #a6e3a1;
+  background: rgba(166, 227, 161, 0.1);
+}
+
+/* ==========================================
+   STATE KETIKA TUGAS SELESAI (DONE)
+   ========================================== */
+.card-tugas-item.selesai {
+  opacity: 0.5;
+}
+
+.card-tugas-item.selesai .text-judul-tugas {
+  text-decoration: line-through;
+  color: #7f849c;
+}
+
+.card-tugas-item.selesai .btn-cek-tugas {
+  background: #a6e3a1;
+  border-color: #a6e3a1;
+}
+
+/* Simbol centang di dalam tombol lingkaran */
+.card-tugas-item.selesai .btn-cek-tugas::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #11111b;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Placeholder saat data kosong */
+.tugas-kosong-placeholder {
+  font-size: 0.85rem;
+  color: #585b70;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+/* ==========================================================================
+   AKOMODASI LIGHT MODE SINKRONISASI
+   ========================================================================== */
+body.light-mode .weekly-box,
+body.light-mode .box-kategori-permanen {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .weekly-box h3 {
+  color: #334155;
+}
+
+body.light-mode .stats-row div {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+body.light-mode .card-tugas-item {
+  background: #f1f5f9;
+}
+
+body.light-mode .card-tugas-item:hover {
+  background: #e2e8f0;
+}
+
+body.light-mode .text-judul-tugas {
+  color: #0f172a;
+}
+
+body.light-mode .text-waktu-tugas {
+  color: #64748b;
+}
+
+body.light-mode .tugas-kosong-placeholder {
+  color: #94a3b8;
+}
+
+/* ==========================================
+   MENU PROFIL
+   ========================================== */
+/* --- GAYA TATA LETAK MENU PROFIL TERPERINCI --- */
+.content-container {
+  padding: 20px;
+  padding-bottom: 90px; /* Memberi ruang agar tidak terpotong navbar */
+}
+.page-content {
+  display: none; /* Sembunyikan default */
+}
+.page-content.active {
+  display: block; /* Munculkan saat aktif */
+}
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1f2937;
+  background-color: #1f2937;
+}
+.edit-badge {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: #111827;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  border: 2px solid #0b0f19;
+  -webkit-tap-highlight-color: transparent;
+}
+.profile-name {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 16px 0 12px 0;
+  text-align: center;
+  color: #ffffff;
+}
+/* Lencana My Points Berwarna Kuning Mengacu pada Referensi Foto 136666.jpg */
+.my-points-box {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 15px auto;
+  box-sizing: border-box;
+  padding: 12px 0;
+  border: 3px solid #fde047;
+  border-radius: 16px;
+  color: #fde047;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  background-color: transparent;
+}
+/* Pengelompokan Kotak List Menu */
+.menu-list {
+  background-color: #111827;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #1f2937;
+  margin-bottom: 24px;
+}
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid #1f2937;
+  transition: background-color 0.2s ease;
+}
+.menu-item:active {
+  background-color: #1f2937; /* Efek menyala samar saat disentuh di HP */
+}
+.menu-item:last-child {
+  border-bottom: none; /* Hilangkan garis bawah untuk item paling bawah */
+}
+.menu-left {
+  font-size: 15px;
+  font-weight: bold;
+  color: #f3f4f6;
+}
+.menu-right {
+  color: #6b7280;
+  font-size: 14px;
+}
+/* Judul Kategori "General" */
+.section-title {
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 10px 0 12px 4px;
+  color: #9ca3af;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Jarak sub-judul (General, Tampilan, dll) biar lebih rapi */
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #757575; /* Warna abu-abu elegan */
+  margin: 20px 0 8px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sedikit tweak untuk tombol kembali agar terlihat tegas */
+#btn-kembali-profil {
+  background-color: rgba(0, 0, 0, 0.02); /* Kasih background tipis */
+  border-left: 4px solid #007bff; /* Garis aksen biru di kiri */
+  border-radius: 4px;
+}
+
+#btn-kembali-profil:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#list-pengaturan {
+  display: none; /* Sembunyi secara default */
+}
+#list-pengaturan.active {
+  display: block; /* Muncul ketika aktif */
+}
+#halaman-pengaturan {
+  display: none;
+}
+#halaman-pengaturan.active {
+  display: block;
+}
+
+/* ==========================================
+   FIX TOTAL SWITCH DARKMODE
+   ========================================== */
+
+/* Ukuran landasan switch */
+.switch-warna {
+  position: relative;
+  display: inline-block;
+  width: 44px !important;
+  height: 24px !important;
+  margin: 0 !important;
+}
+
+/* Sembunyikan checkbox asli */
+.switch-warna input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Bentuk landasan saat MATI */
+.slider-bulat {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #b0b0b5 !important; /* Abu-abu iOS universal */
+  transition: 0.3s;
+  border-radius: 24px !important;
+}
+
+/* Bulatan putih di dalamnya saat MATI */
+.slider-bulat:before {
+  position: absolute;
+  content: "";
+  height: 18px !important;
+  width: 18px !important;
+  left: 3px !important;
+  bottom: 3px !important;
+  background-color: white !important;
+  transition: 0.3s;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* KUNCINYA DI SINI: Jika input APAPUN di dalam .switch-warna dalam posisi HIDUP */
+.switch-warna input:checked + .slider-bulat {
+  background-color: #008aff !important; /* Biru gelap premium pilihan Mas Ubay */
+}
+
+/* Bulatan bergeser saat HIDUP */
+.switch-warna input:checked + .slider-bulat:before {
+  transform: translateX(20px) !important;
+}
+
+/* ==========================================
+   OVERRIDE WARNA UNTUK LIGHT MODE
+   ========================================== */
+body.light-mode {
+  background-color: #f4f6f9 !important;
+  color: #1c1c1e !important;
+}
+
+body.light-mode .content-container,
+body.light-mode .page-content {
+  background-color: #ffffff !important;
+  color: #1c1c1e !important;
+}
+
+body.light-mode .menu-item {
+  background-color: #f0f2f5 !important;
+  color: #1c1c1e !important;
+}
+
+body.light-mode .section-title {
+  color: #666666 !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+  color: #1c1c1e !important;
+}
+/* ==========================================
+   OVERRIDE WARNA UNTUK LIGHT MODE (FIX TULISAN PUTIH)
+   ========================================== */
+body.light-mode {
+  background-color: #f4f6f9 !important;
+  color: #1c1c1e !important;
+}
+
+body.light-mode .content-container,
+body.light-mode .page-content {
+  background-color: #ffffff !important;
+  color: #1c1c1e !important;
+}
+
+/* Memaksa semua item list menu dan teks di dalamnya berubah jadi hitam */
+body.light-mode .menu-item,
+body.light-mode .menu-item *,
+body.light-mode .menu-left,
+body.light-mode .menu-right,
+body.light-mode #btn-kembali-profil {
+  background-color: #f0f2f5 !important;
+  color: #1c1c1e !important;
+}
+
+/* Memaksa judul-judul section agar warnanya abu-abu gelap/hitam */
+body.light-mode .section-title {
+  color: #555555 !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+  color: #1c1c1e !important;
+}
+
+/* --- LENCANA MY POINTS FIX CENTER (FLEXBOX) --- */
+.my-points-box {
+  background-color: #0f2c59 !important; /* Warna Dark Blue Premium */
+  border: 1px solid #0f2c59 !important;
+  border-radius: 12px !important;
+  margin: 15px auto !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+
+  /* Kombinasi Flexbox biar teks WAJIB di tengah */
+  display: flex !important;
+  justify-content: center !important; /* Tengah secara Horizontal */
+  align-items: center !important; /* Tengah secara Vertikal */
+  padding: 12px 0 !important; /* Atur tinggi kotak atas-bawah */
+}
+
+.my-points-box span {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-align: center !important;
+  line-height: 1 !important; /* Menghilangkan sisa spasi font */
+  margin: 0 !important; /* Reset margin bawaan span */
+  padding: 0 !important; /* Reset padding bawaan span */
+}
+
+/* ==========================================
+   HEADER PENGATURAN (TANPA KOTAK)
+   ========================================== */
+.header-pengaturan-baru {
+  display: flex;
+  align-items: center;
+  padding: 25px 20px 20px 20px; /* Jarak lega di atas */
+}
+
+/* Menghapus paksa kotak jelek di tombol kembali */
+#btn-kembali-profil {
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  margin-right: 15px;
+  background: transparent !important; /* Hapus latar kotak */
+  border: none !important; /* Hapus garis kotak */
+  box-shadow: none !important; /* Hapus bayangan */
+  padding: 0 !important;
+  cursor: pointer;
+}
+
+.header-pengaturan-baru h2 {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
+/* ==========================================
+   LAYER PEMISAH (KOTAK BESAR MELENGKUNG BAWAHNYA)
+   ========================================== */
+.layer-konten-pengaturan {
+  border-top-left-radius: 30px !important; /* Lengkungan besar kiri atas */
+  border-top-right-radius: 30px !important; /* Lengkungan besar kanan atas */
+  padding: 25px 20px 100px 20px; /* Jarak dalam (bawah dilebihin biar gak nabrak navigasi bawah) */
+  margin-left: -20px;
+  margin-right: -20px;
+  min-height: 85vh; /* Biar layernya panjang ke bawah */
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05); /* Sedikit bayangan di lengkungan */
+}
+
+/* ==========================================
+   SINKRONISASI WARNA (DARK & LIGHT MODE)
+   ========================================== */
+/* SAAT LIGHT MODE */
+body.light-mode .header-pengaturan-baru {
+  color: #1c1c1e !important;
+  background-color: transparent !important;
+}
+body.light-mode .layer-konten-pengaturan {
+  background-color: #ffffff !important; /* Warna layer putih di mode terang */
+}
+
+/* SAAT DARK MODE (DEFAULT) */
+body:not(.light-mode) .header-pengaturan-baru {
+  color: #ffffff !important;
+}
+body:not(.light-mode) .layer-konten-pengaturan {
+  background-color: #1c1c1e !important; /* Warna layer abu-abu gelap di mode gelap */
+}
+#language-select {
+  background: transparent;
+  color: inherit;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+#language-select option {
+  color: black;
+}
+
+/* ==========================================
+   STYLE TOGGLE SWITCH NOTIFIKASI PREMIUM
+   ========================================== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+/* Sembunyikan checkbox asli bawaan HP */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Background landasan saklar saat MATI (Bisa kelihatan di gelap & terang) */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #b0b0b5 !important; /* Abu-abu medium universal */
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+/* Lingkaran di dalamnya saat MATI */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff !important;
+  transition: 0.3s;
+  border-radius: 50%;
+  /* JURUS UTAMA: Kasih efek shadow hitam tipis biar bulatannya menonjol di background putih */
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Saat HIDUP (Checked) -> Tetap berubah jadi BIRU TERANG */
+.switch input:checked + .slider {
+  background-color: #00a8ff !important;
+}
+
+/* Saat HIDUP -> Lingkaran bergeser ke kanan */
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ==========================================
+   STYLING BOX PILIHAN BAHASA DAN ALAT UKUR
+   ========================================== */
+
+/* 🌙 KONDISI DEFAULT (DARK MODE) */
+select {
+  background-color: #2c2e38 !important; /* Warna abu gelap biar matching dengan card-nya */
+  color: #ffffff !important; /* Warna teks jadi putih bersih */
+  border: 1px solid #3a3d4a !important; /* Border tipis biar tegas tapi soft */
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  /* Hilangkan efek biru pas di-tap di HP */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Biar pas diklik, opsi di dalamnya juga gak rusak warnanya */
+select option {
+  background-color: #1c1e24;
+  color: #ffffff;
+}
+
+/* ☀️ KONDISI SAAT LIGHT MODE (.light-mode) */
+body.light-mode select {
+  background-color: #ffffff !important; /* Kembali jadi putih bersih */
+  color: #1c1c1e !important; /* Teks berubah jadi hitam/gelap */
+  border: 1px solid #d1d1d6 !important; /* Border abu-abu terang khas iOS */
+}
+
+body.light-mode select option {
+  background-color: #ffffff;
+  color: #1c1c1e;
+}
